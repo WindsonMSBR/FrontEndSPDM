@@ -1,0 +1,17 @@
+<div class="product-catalog p-p-4">
+  <h1>Catálogo de Produtos</h1>
+  
+  <div class="p-grid">
+    <div *ngFor="let product of (products$ | async)" class="p-col-12 p-md-6 p-lg-4">
+      <p-card [header]="product.name" [subheader]="product.category">
+        <p>{{ product.description }}</p>
+        <p><strong>Estoque:</strong> {{ product.stock.quantity }} unidades</p>
+        <ng-template pTemplate="footer">
+          <div class="price">
+            Preço Varejo: {{ product.price.retail | currency:'BRL' }}
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+</div>

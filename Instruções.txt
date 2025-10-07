@@ -1,0 +1,307 @@
+Documentação para Geração de Código do Projeto - Front-end Angular
+Contexto Técnico:
+
+Framework: Angular (última versão estável)
+
+Linguagem: TypeScript
+
+Biblioteca de UI: PrimeNG
+
+Gerenciamento de Estado: Serviços com RxJS (para este escopo inicial)
+
+Estrutura de Pastas: O projeto segue uma estrutura com core, features, e shared.
+
+Instrução para a IA:
+"Você é um desenvolvedor Angular sênior. Sua tarefa é gerar o código para as Sprints a seguir, seguindo estritamente as especificações para cada arquivo. Use o Angular CLI para gerar os artefatos (módulos, componentes, serviços) sempre que possível."
+
+Sprint 1: Estrutura da Aplicação e Navegação (US14)
+Objetivo: Implementar o layout principal da aplicação com um menu de navegação funcional e responsivo, preparando o terreno para as futuras funcionalidades.
+
+Passo 1: Gerar os Artefatos Necessários
+Execute os seguintes comandos do Angular CLI:
+
+Bash
+
+ng generate module shared --flat=false
+ng generate component shared/components/navbar
+ng generate component features/dashboard-placeholder
+ng generate component features/products-placeholder
+Passo 2: Configurar o Módulo Compartilhado (SharedModule)
+Modifique o arquivo src/app/shared/shared.module.ts:
+
+Importe: CommonModule, RouterModule, MenubarModule do PrimeNG.
+
+Declare: NavbarComponent.
+
+Exporte: NavbarComponent e MenubarModule para que outros módulos possam usá-los.
+
+Caso seja necessario, você está livre para melhorar o código.
+
+TypeScript
+
+// src/app/shared/shared.module.ts
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
+import { MenubarModule } from 'primeng/menubar';
+import { NavbarComponent } from './components/navbar/navbar.component';
+
+@NgModule({
+  declarations: [
+    NavbarComponent
+  ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MenubarModule
+  ],
+  exports: [
+    NavbarComponent // Exporte o componente para ser usado no AppModule
+  ]
+})
+export class SharedModule { }
+Passo 3: Implementar o Componente de Navegação (NavbarComponent)
+
+Arquivo: src/app/shared/components/navbar/navbar.component.ts
+
+Lógica: Defina a estrutura do menu em um array de MenuItem do PrimeNG. Os links devem apontar para as rotas que serão configuradas a seguir.
+
+TypeScript
+
+// src/app/shared/components/navbar/navbar.component.ts
+import { Component, OnInit } from '@angular/core';
+import { MenuItem } from 'primeng/api';
+
+@Component({
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss']
+})
+export class NavbarComponent implements OnInit {
+  items: MenuItem[] = [];
+
+  ngOnInit() {
+    this.items = [
+      {
+        label: 'Dashboard',
+        icon: 'pi pi-fw pi-home',
+        routerLink: ['/dashboard']
+      },
+      {
+        label: 'Produtos',
+        icon: 'pi pi-fw pi-box',
+        items: [
+          {
+            label: 'Catálogo',
+            icon: 'pi pi-fw pi-list',
+            routerLink: ['/products']
+          },
+          {
+            label: 'Estoque',
+            icon: 'pi pi-fw pi-inbox',
+            routerLink: ['/stock']
+          }
+        ]
+      },
+      {
+        label: 'Vendas',
+        icon: 'pi pi-fw pi-shopping-cart',
+        routerLink: ['/sales']
+      },
+      {
+        label: 'Funcionários',
+        icon: 'pi pi-fw pi-users',
+        routerLink: ['/staff']
+      }
+    ];
+  }
+}
+Arquivo: src/app/shared/components/navbar/navbar.component.html
+
+Conteúdo: Adicione o componente p-menubar do PrimeNG.
+
+HTML
+
+<p-menubar [model]="items"></p-menubar>
+Passo 4: Configurar o Layout Principal e as Rotas
+
+Arquivo: src/app/app.module.ts
+
+Ação: Importe o SharedModule e o BrowserAnimationsModule (requerido pelo PrimeNG).
+
+Arquivo: src/app/app-routing.module.ts
+
+Lógica: Defina as rotas para os componentes placeholder.
+
+TypeScript
+
+// src/app/app-routing.module.ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { DashboardPlaceholderComponent } from './features/dashboard-placeholder/dashboard-placeholder.component';
+
+const routes: Routes = [
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: 'dashboard', component: DashboardPlaceholderComponent },
+  // A rota 'products' será definida no próximo Sprint com lazy loading
+  { path: 'products', loadChildren: () => import('./features/products/products.module').then(m => m.ProductsModule) },
+  // Adicione outras rotas placeholder conforme necessário
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+Arquivo: src/app/app.component.html
+
+Conteúdo: Limpe o conteúdo padrão e adicione o seletor da navbar e o router-outlet.
+
+HTML
+
+<app-navbar></app-navbar>
+<div class="main-container">
+  <router-outlet></router-outlet>
+</div>
+Resultado Esperado da Sprint 1: A aplicação exibe um menu de navegação superior funcional. Clicar nos itens de menu deve navegar para as páginas correspondentes (que por enquanto são placeholders).
+
+Sprint 2: Catálogo de Produtos e Estoque (US03 & US13)
+Objetivo: Criar a funcionalidade de catálogo, exibindo uma lista de produtos a partir de um serviço. As informações de estoque serão incluídas no modelo de dados.
+
+Passo 1: Gerar os Artefatos do Módulo de Produtos
+Execute os seguintes comandos do Angular CLI:
+
+Bash
+
+ng generate module features/products --route=products --module=app
+ng generate component features/products/product-list
+ng generate service features/products/product
+Passo 2: Definir o Modelo de Dados (Product)
+Crie o arquivo src/app/shared/models/product.model.ts:
+
+TypeScript
+
+// src/app/shared/models/product.model.ts
+export interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: {
+    retail: number; // Preço para varejo
+    wholesale: number; // Preço para atacado
+  };
+  stock: {
+    quantity: number;
+    lots: {
+      lotNumber: string;
+      expiryDate: string;
+      quantity: number;
+    }[];
+  };
+  category: string;
+}
+Passo 3: Implementar o Serviço de Produtos (ProductService)
+
+Arquivo: src/app/features/products/product.service.ts
+
+Lógica: Crie um método getProducts() que retorna um Observable com uma lista de produtos mocados. Isso permite desenvolver o front-end independentemente da API.
+
+TypeScript
+
+// src/app/features/products/product.service.ts
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { Product } from '../../shared/models/product.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ProductService {
+
+  private mockProducts: Product[] = [
+    {
+      id: '1', name: 'Óleo de Motor 15W40', description: 'Óleo semissintético para motores a gasolina.',
+      price: { retail: 45.50, wholesale: 38.00 },
+      stock: {
+        quantity: 50,
+        lots: [{ lotNumber: 'LOTE001', expiryDate: '2026-10-01', quantity: 50 }]
+      },
+      category: 'Lubrificantes'
+    },
+    {
+      id: '2', name: 'Filtro de Ar', description: 'Filtro de ar para carros populares.',
+      price: { retail: 25.00, wholesale: 20.00 },
+      stock: {
+        quantity: 120,
+        lots: [
+          { lotNumber: 'LOTE002', expiryDate: 'N/A', quantity: 70 },
+          { lotNumber: 'LOTE003', expiryDate: 'N/A', quantity: 50 }
+        ]
+      },
+      category: 'Filtros'
+    }
+  ];
+
+  getProducts(): Observable<Product[]> {
+    return of(this.mockProducts);
+  }
+}
+Passo 4: Construir o Componente da Lista de Produtos (ProductListComponent)
+
+Arquivo: src/app/features/products/product-list/product-list.component.ts
+
+Lógica: Injete o ProductService e busque a lista de produtos no ngOnInit.
+
+TypeScript
+
+// src/app/features/products/product-list/product-list.component.ts
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Product } from '../../../shared/models/product.model';
+import { ProductService } from '../product.service';
+
+@Component({
+  selector: 'app-product-list',
+  templateUrl: './product-list.component.html',
+  styleUrls: ['./product-list.component.scss']
+})
+export class ProductListComponent implements OnInit {
+  products$: Observable<Product[]>;
+
+  constructor(private productService: ProductService) { }
+
+  ngOnInit(): void {
+    this.products$ = this.productService.getProducts();
+  }
+}
+Arquivo: src/app/features/products/product-list/product-list.component.html
+
+Lógica: Use a diretiva *ngFor com o async pipe para renderizar a lista de produtos. Utilize componentes do PrimeNG como p-card para uma boa visualização.
+
+HTML
+
+<div class="product-catalog p-p-4">
+  <h1>Catálogo de Produtos</h1>
+  
+  <div class="p-grid">
+    <div *ngFor="let product of (products$ | async)" class="p-col-12 p-md-6 p-lg-4">
+      <p-card [header]="product.name" [subheader]="product.category">
+        <p>{{ product.description }}</p>
+        <p><strong>Estoque:</strong> {{ product.stock.quantity }} unidades</p>
+        <ng-template pTemplate="footer">
+          <div class="price">
+            Preço Varejo: {{ product.price.retail | currency:'BRL' }}
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+</div>
+Passo 5: Configurar o Módulo de Produtos (ProductsModule)
+
+Arquivo: src/app/features/products/products.module.ts
+
+Ação: Importe os módulos necessários para os componentes do PrimeNG (ex: CardModule) e declare o ProductListComponent.
+
+Resultado Esperado da Sprint 2: Ao navegar para a rota /products, a página deve exibir uma lista de produtos em formato de cards. Cada card deve mostrar o nome, descrição, estoque e preço de varejo do produto, com dados vindos do serviço mocado.

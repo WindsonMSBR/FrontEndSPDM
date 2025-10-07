@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="80" viewBox="0 0 200 80">
+  <rect width="200" height="80" fill="transparent"/>
+  <rect x="10" y="15" width="50" height="50" rx="5" ry="5" fill="#1e3a8a"/>
+  <text x="35" y="50" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="white">SPDM</text>
+  <text x="120" y="40" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e3a8a">DISTRIBUIDORA</text>
+  <text x="120" y="60" font-family="Arial" font-size="16" text-anchor="middle" fill="#1e3a8a">SPDM</text>
+</svg>
