@@ -1,4 +1,4 @@
-# Sistema de Gestão para a Distribuidora SPDM - Projeto Integrador
+# Sistema de Gestão para a Distribuidora SPDM - Projeto Integradorgit status
 
 Este projeto é uma aplicação web de gestão para a distribuidora SPDM, desenvolvido como parte do Projeto Integrador do 6º período do curso de Engenharia de Software. O objetivo é aplicar conceitos práticos de desenvolvimento, arquitetura de software e metodologias ágeis para criar uma solução de gestão de negócios.
 
