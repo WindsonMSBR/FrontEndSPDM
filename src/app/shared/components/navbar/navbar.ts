@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, CommonModule],
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.scss']
 })
 export class NavbarComponent {
-  // Simplificado para usar HTML/CSS puro
+  // Componente simplificado - sem lógica complexa desnecessária
 }

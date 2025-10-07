@@ -1,9 +1,46 @@
 <nav class="navbar">
-  <div class="logo">SPDM</div>
-  <ul class="nav-links">
-    <li><a routerLink="/dashboard">Dashboard</a></li>
-    <li><a routerLink="/products">Produtos</a></li>
-    <li><a routerLink="/sales">Vendas</a></li>
-    <li><a routerLink="/staff">Funcionários</a></li>
-  </ul>
+  <div class="navbar-brand">
+    <div class="logo">
+      <span class="logo-text">DISTRIBUIDORA SPDM</span>
+    </div>
+  </div>
+  
+  <div class="navbar-menu">
+    <ul class="nav-links">
+      <li>
+        <a 
+          routerLink="/dashboard" 
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: true}"
+        >
+          <i class="pi pi-home"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/products" routerLinkActive="active">
+          <i class="pi pi-box"></i>
+          <span>Produtos</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/stock" routerLinkActive="active">
+          <i class="pi pi-warehouse"></i>
+          <span>Estoque</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/sales" routerLinkActive="active">
+          <i class="pi pi-shopping-cart"></i>
+          <span>Vendas</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/staff" routerLinkActive="active">
+          <i class="pi pi-users"></i>
+          <span>Funcionários</span>
+        </a>
+      </li>
+    </ul>
+  </div>
 </nav>
