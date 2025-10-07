@@ -1,0 +1,171 @@
+<div class="product-form-container">
+  <div class="form-header">
+    <h1>Cadastro de Produto</h1>
+    <p>Preencha os dados do novo produto para adicioná-lo ao catálogo</p>
+  </div>
+  
+  <div class="form-card">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Informações Básicas -->
+      <div class="form-section">
+        <h3>Informações Básicas</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Nome do Produto *</label>
+            <input 
+              id="name"
+              type="text" 
+              pInputText 
+              formControlName="name"
+              placeholder="Ex: Copo de papel"
+              [class.error]="isFieldInvalid('name')"
+            />
+            <small class="error-message" *ngIf="isFieldInvalid('name')">
+              {{ getFieldError('name') }}
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="category">Categoria *</label>
+            <select 
+              id="category"
+              pInputText 
+              formControlName="category"
+              [class.error]="isFieldInvalid('category')"
+            >
+              <option value="">Selecione uma categoria</option>
+              <option *ngFor="let cat of categories" [value]="cat.value">{{ cat.label }}</option>
+            </select>
+            <small class="error-message" *ngIf="isFieldInvalid('category')">
+              {{ getFieldError('category') }}
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Descrição *</label>
+          <textarea 
+            id="description"
+            pInputText 
+            formControlName="description"
+            placeholder="Descreva o produto detalhadamente..."
+            rows="3"
+            [class.error]="isFieldInvalid('description')"
+          ></textarea>
+          <small class="error-message" *ngIf="isFieldInvalid('description')">
+            {{ getFieldError('description') }}
+          </small>
+        </div>
+      </div>
+
+      <!-- Preços -->
+      <div class="form-section">
+        <h3>Preços</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="retailPrice">Preço Varejo (R$) *</label>
+            <input 
+              id="retailPrice"
+              type="number" 
+              pInputText 
+              formControlName="retailPrice"
+              step="0.01"
+              min="0.01"
+              placeholder="0.00"
+              [class.error]="isFieldInvalid('retailPrice')"
+            />
+            <small class="error-message" *ngIf="isFieldInvalid('retailPrice')">
+              {{ getFieldError('retailPrice') }}
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="wholesalePrice">Preço Atacado (R$) *</label>
+            <input 
+              id="wholesalePrice"
+              type="number" 
+              pInputText 
+              formControlName="wholesalePrice"
+              step="0.01"
+              min="0.01"
+              placeholder="0.00"
+              [class.error]="isFieldInvalid('wholesalePrice')"
+            />
+            <small class="error-message" *ngIf="isFieldInvalid('wholesalePrice')">
+              {{ getFieldError('wholesalePrice') }}
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estoque -->
+      <div class="form-section">
+        <h3>Estoque Inicial</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="lotNumber">Número do Lote *</label>
+            <input 
+              id="lotNumber"
+              type="text" 
+              pInputText 
+              formControlName="lotNumber"
+              placeholder="Ex: LOTE001"
+              [class.error]="isFieldInvalid('lotNumber')"
+            />
+            <small class="error-message" *ngIf="isFieldInvalid('lotNumber')">
+              {{ getFieldError('lotNumber') }}
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="expiryDate">Data de Validade</label>
+            <input 
+              id="expiryDate"
+              type="date" 
+              pInputText 
+              formControlName="expiryDate"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="initialQuantity">Quantidade Inicial *</label>
+            <input 
+              id="initialQuantity"
+              type="number" 
+              pInputText 
+              formControlName="initialQuantity"
+              min="1"
+              step="1"
+              placeholder="0"
+              [class.error]="isFieldInvalid('initialQuantity')"
+            />
+            <small class="error-message" *ngIf="isFieldInvalid('initialQuantity')">
+              {{ getFieldError('initialQuantity') }}
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botões -->
+      <div class="form-actions">
+        <p-button 
+          label="Cancelar" 
+          icon="pi pi-times" 
+          severity="secondary"
+          (onClick)="onCancel()"
+        ></p-button>
+        <p-button 
+          label="Cadastrar Produto" 
+          icon="pi pi-check" 
+          type="submit"
+          [disabled]="productForm.invalid"
+        ></p-button>
+      </div>
+
+    </form>
+  </div>
+</div>
