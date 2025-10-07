@@ -1,17 +1,35 @@
-<div class="product-catalog p-p-4">
-  <h1>Catálogo de Produtos</h1>
+<div class="product-catalog">
+  <div class="catalog-header">
+    <h1>Catálogo de Produtos</h1>
+    <p-button 
+      label="Novo Produto" 
+      icon="pi pi-plus" 
+      severity="success"
+      routerLink="/products/new"
+    ></p-button>
+  </div>
   
-  <div class="p-grid">
-    <div *ngFor="let product of (products$ | async)" class="p-col-12 p-md-6 p-lg-4">
-      <p-card [header]="product.name" [subheader]="product.category">
-        <p>{{ product.description }}</p>
-        <p><strong>Estoque:</strong> {{ product.stock.quantity }} unidades</p>
-        <ng-template pTemplate="footer">
-          <div class="price">
-            Preço Varejo: {{ product.price.retail | currency:'BRL' }}
-          </div>
-        </ng-template>
-      </p-card>
+  <div class="products-grid">
+    <div *ngFor="let product of (products$ | async)" class="product-card">
+      <div class="product-image">
+        <img 
+          [src]="getProductImage(product.name)" 
+          [alt]="product.name"
+          (error)="$event.target.src='/products/copo-papel.svg'"
+          loading="lazy"
+        />
+      </div>
+      <div class="product-info">
+        <h3 class="product-name">{{ product.name }}</h3>
+        <p class="product-description">{{ product.description }}</p>
+        <div class="product-price">{{ product.price.retail | currency:'BRL' }}</div>
+        <p-button 
+          label="Adicionar ao carrinho" 
+          icon="pi pi-shopping-cart"
+          severity="info"
+          size="small"
+        ></p-button>
+      </div>
     </div>
   </div>
 </div>
